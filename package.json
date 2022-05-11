@@ -15,12 +15,14 @@
   "license": "MIT",
   "scripts": {
     "build": "tree-sitter generate",
-    "test": "tree-sitter test"
+    "test": "tree-sitter test",
+    "hello": "tree-sitter parse test/hello.nmp"
   },
   "dependencies": {
     "nan": "^2.15.0"
   },
   "devDependencies": {
+    "@types/node": "^17.0.32",
     "tree-sitter-cli": "^0.20.6"
   }
 }
