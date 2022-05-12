@@ -1,0 +1,213 @@
+===
+no attribute
+===
+let R_SIZE = 16
+reg SR[1, card(32)]
+reg R[R_SIZE, card(32)]
+---
+(top_level
+  (specification
+    (let_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))))
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))
+      (type_expression
+        (card_type
+          (integer)))))
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (reference_expression
+          (identifier)))
+      (type_expression
+        (card_type
+          (integer))))))
+===
+alias attribute
+===
+reg INT[1, card(32)]
+reg FLT[1, float(24, 8)] alias INT
+---
+(top_level
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))
+      (type_expression
+        (card_type
+          (integer)))))
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))
+      (type_expression
+        (float_type
+          (integer)
+          (integer)))
+      (attributes
+        (attribute
+          (location
+            (identifier)))))))
+===
+alias attribute index
+===
+reg RL[16, card(32)]
+reg RH[32, card(16)] alias RH[0]
+---
+(top_level
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))
+      (type_expression
+        (card_type
+          (integer)))))
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))
+      (type_expression
+        (card_type
+          (integer)))
+      (attributes
+        (attribute
+          (location
+            (identifier)
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))))))))
+===
+alias attribute up..low
+===
+reg AX[1, card(16)]
+reg AL[1, card(8)] alias AX<7..0>
+reg AH[1, card(8)] alias AX<15..8>
+---
+(top_level
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))
+      (type_expression
+        (card_type
+          (integer)))))
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))
+      (type_expression
+        (card_type
+          (integer)))
+      (attributes
+        (attribute
+          (location
+            (identifier)
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))
+            (expression
+              (constant_expression
+                (litteral
+                  (integer)))))))))
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))
+      (type_expression
+        (card_type
+          (integer)))
+      (attributes
+        (attribute
+          (location
+            (identifier)
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))))))))
+===
+alias attribute concatenation
+===
+reg CPSR[1, card(32)]
+reg ISTATE[1, card(8)] alias = CPSR<15..10> :: CPSR<26..25>
+---
+(top_level
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))
+      (type_expression
+        (card_type
+          (integer)))))
+  (specification
+    (register_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer))))
+      (type_expression
+        (card_type
+          (integer)))
+      (attributes
+        (attribute
+          (location
+            (location
+              (identifier)
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer))))
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer)))))
+            (location
+              (identifier)
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer))))
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer)))))))))))

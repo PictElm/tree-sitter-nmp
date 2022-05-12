@@ -1,0 +1,88 @@
+===
+typed
+===
+mem M[4*1024, card(16)]
+---
+(top_level
+  (specification
+    (memory_specification
+      (identifier)
+      (expression
+        (binary_expression
+          (arithmetic_expression
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))
+            (expression
+              (constant_expression
+                (litteral
+                  (integer)))))))
+      (type_expression
+        (card_type
+          (integer))))))
+===
+untyped
+===
+mem M[4*1024]
+---
+(top_level
+  (specification
+    (memory_specification
+      (identifier)
+      (expression
+        (binary_expression
+          (arithmetic_expression
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))))))))
+===
+aliased
+===
+mem M32[4*1024, card(32)]
+mem M16[4*1024, card(16)] alias M32
+---
+(top_level
+  (specification
+    (memory_specification
+      (identifier)
+      (expression
+        (binary_expression
+          (arithmetic_expression
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))
+            (expression
+              (constant_expression
+                (litteral
+                  (integer)))))))
+      (type_expression
+        (card_type
+          (integer)))))
+  (specification
+    (memory_specification
+      (identifier)
+      (expression
+        (binary_expression
+          (arithmetic_expression
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))
+            (expression
+              (constant_expression
+                (litteral
+                  (integer)))))))
+      (type_expression
+        (card_type
+          (integer)))
+      (attributes
+        (attribute
+          (location
+            (identifier)))))))

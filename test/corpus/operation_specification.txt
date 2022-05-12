@@ -1,0 +1,44 @@
+===
+'AND'
+===
+op some()
+	syntax = "some"
+	image = "101010"
+	action = {}
+---
+(top_level
+  (specification
+    (operation_specification
+      (and_operation_specification
+        (identifier)
+        (attributes
+          (attribute
+            (identifier)
+            (expression
+              (constant_expression
+                (litteral
+                  (string)))))
+          (attribute
+            (identifier)
+            (expression
+              (constant_expression
+                (litteral
+                  (string)))))
+          (attribute
+            (identifier)))))))
+===
+'OR'
+===
+op some_all
+	= some
+	| some_other
+	| some_more
+---
+(top_level
+  (specification
+    (operation_specification
+      (or_operation_specification
+        (identifier)
+        (identifier)
+        (identifier)
+        (identifier)))))

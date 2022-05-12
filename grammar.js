@@ -5,7 +5,7 @@ module.exports = grammar({
 
   extras: $ => [
     $.comment,
-    /[ \t\n]/,
+    /[ \t\r\n]/,
   ],
 
   conflicts: $ => [
@@ -21,9 +21,14 @@ module.exports = grammar({
       $.let_specification,
       $.register_specification,
       $.memory_specification,
+      $.variable_specification,
       $.operation_specification,
       $.mode_specification,
       $.top_level_selection,
+      $.macro_directive,
+      $.include_directive,
+      $.delayed_include_directive,
+      $.other_directive, // YYY: e.g. '#line n,m file.ext'
     ),
 
     type_specification: $ => seq(
@@ -33,7 +38,7 @@ module.exports = grammar({
     let_specification: $ => seq(
       'let', optional('*'), $.identifier,
       optional(seq(':', $.type_expression)),
-      '=', $.constant_expression,
+      '=', $.expression, // YYY: doc says constant_expression
     ),
     register_specification: $ => seq(
       'reg', field('id', $.identifier),
@@ -42,7 +47,12 @@ module.exports = grammar({
     ),
     memory_specification: $ => seq(
       'mem', field('id', $.identifier),
-      '[', field('ns', $.integer), optional(seq(',', field('t', $.type_expression))), ']',
+      '[', field('ns', $.expression), optional(seq(',', field('t', $.type_expression))), ']',
+      optional($.attributes),
+    ),
+    variable_specification: $ => seq( // XXX: not documented lol (todo: test behavior)
+      'var', field('id', $.identifier),
+      '[', field('ns', $.expression), optional(seq(',', field('t', $.type_expression))), ']',
       optional($.attributes),
     ),
     operation_specification: $ => choice(
@@ -59,10 +69,11 @@ module.exports = grammar({
       optional(seq('else', repeat($.specification))),
       'endif',
     ),
+    other_directive: $ => seq('#', token.immediate(/[a-zA-Z_][a-zA-Z_0-9]*/), /.*/),
 
     attributes: $ => repeat1($.attribute),
     attribute: $ => choice(
-      seq('alias', '=', $.location), // YYY: no '='?
+      seq('alias', optional('='), $.location), // YYY: sometimes no '=' is ok
       seq($.identifier, '=', choice($.expression, seq('{', optional($.sequence), '}'))),
     ),
 
@@ -82,7 +93,7 @@ module.exports = grammar({
 
     or_operation_specification: $ => seq(
       'op', field('id', $.identifier),
-      '=', repeatSep1($.identifier, ','),
+      '=', repeatSep1($.identifier, '|'),
     ),
     and_operation_specification: $ => seq(
       'op', field('id', $.identifier),
@@ -91,7 +102,7 @@ module.exports = grammar({
     ),
     or_mode_specification: $ => seq(
       'mode', field('id', $.identifier),
-      '=', repeatSep1($.identifier, ','),
+      '=', repeatSep1($.identifier, '|'),
     ),
     and_mode_specification: $ => seq(
       'mode', field('id', $.identifier),
@@ -157,14 +168,7 @@ module.exports = grammar({
       $.switch_expression,
       seq('(', $.expression, ')'),
     ),
-    constant_expression: $ => choice(
-      /[0-9]+/,                       // decimal (YYY: [1-9])
-      /0[xX][0-9a-fA-F]+/,            // hexadecimal
-      /0[bB][01]+/,                   // binary
-      /[0-9]*.[0-9]*/,                // floating-point 1
-      /[0-9]+[eE][-+]?[0-9]+/,        // floating-point 2
-      /[0-9]*.[0-9]+[eE][-+]?[0-9]+/, // floating-point 3
-    ),
+    constant_expression: $ => $.litteral,
     reference_expression: $ => seq($.identifier, optional(seq('[', field('i', $.expression), ']'))),
     dotted_expression: $ => seq(field('pid', $.identifier), '.', field('cid', $.identifier)),
     unary_expression: $ => choice(
@@ -214,21 +218,24 @@ module.exports = grammar({
     bool_type: $ => 'bool',
     int_type: $ => seq('int', '(', field('N', $.integer), ')'),
     card_type: $ => seq('card', '(', field('N', $.integer), ')'),
-    fix_type: $ => seq('fix', '(', field('I', $.integer), field('F', $.integer), ')'),
-    float_type: $ => seq('float', '(', field('M', $.integer), field('E', $.integer), ')'),
+    fix_type: $ => seq('fix', '(', field('I', $.integer), ',', field('F', $.integer), ')'),
+    float_type: $ => seq('float', '(', field('M', $.integer), ',', field('E', $.integer), ')'),
     range_type: $ => seq('[', field('L', $.integer), '..', field('U', $.integer), ']'),
     enum_type: $ => seq('enum', '(', repeatSep1($.value, ','), ')'),
     named_type: $ => $.identifier,
 
-    // YYY: enum_value
     value: $ => choice(
       $.integer,
       seq($.integer, '..', $.integer),
     ),
 
-    macro: $ => seq('macro', '(', repeatSep($.identifier, ','), ')', '=', /([^\n]|\\\n)\n/),
-    include: $ => seq('include', $.string),
-    delayed_include: $ => seq('include', optional(choice('-', '_')), 'op', $.string),
+    macro_directive: $ => seq(
+      'macro', $.identifier,
+      '(', repeatSep($.identifier, ','), ')',
+      '=', /([^\r\n]|\\\r?\n)*\r?\n/
+    ),
+    include_directive: $ => seq('include', $.string),
+    delayed_include_directive: $ => seq('include', optional(choice('-', '_')), 'op', $.string),
 
     identifier: $ => /[a-zA-Z_][a-zA-Z_0-9]*/,
     // reserved keywords:
@@ -237,7 +244,7 @@ module.exports = grammar({
     // do        else    enddo      endif
     // enum      error   exception  false
     // fix       float   for        format
-    // if        image   in         initial
+    // if        image   in         include  initial
     // int       let     macro      mode
     // not       op      ports      reg
     // resource  switch  syntax     then
@@ -253,7 +260,7 @@ module.exports = grammar({
 
     boolean: $ => choice('true', 'false'),
     integer: $ => choice(
-      /[1-9][0-9]+/,
+      /[0-9]+/,
       /0[xX][0-9a-fA-F]+/,
       /0[bB][01]+/,
     ),
@@ -262,11 +269,11 @@ module.exports = grammar({
       /[0-9]+[eE][+-]?[0-9]+/,
       /[0-9]+\.[0-9]+[eE][+-]?[0-9]+/,
     ),
-    string: $ => /"([^\\]|\\[^"])*"/,
+    string: $ => /"(\\.|[^"])*"/,
 
     comment: $ => choice(
       seq('//', /.*/),
-      seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/'),
+      seq('/*', /(\*[^/]|[^*])*/, '*/'),
     ),
 
   },

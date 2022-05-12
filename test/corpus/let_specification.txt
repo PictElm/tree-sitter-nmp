@@ -1,0 +1,58 @@
+===
+typed
+===
+let some: card(2) = 2
+---
+(top_level
+  (specification
+    (let_specification
+      (identifier)
+      (type_expression
+        (card_type
+          (integer)))
+      (expression
+        (constant_expression
+          (litteral
+            (integer)))))))
+===
+untyped
+===
+let some = 2
+---
+(top_level
+  (specification
+    (let_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer)))))))
+===
+overridable typed
+===
+let* some: card(2) = 2
+---
+(top_level
+  (specification
+    (let_specification
+      (identifier)
+      (type_expression
+        (card_type
+          (integer)))
+      (expression
+        (constant_expression
+          (litteral
+            (integer)))))))
+===
+overridable untyped
+===
+let* some = 2
+---
+(top_level
+  (specification
+    (let_specification
+      (identifier)
+      (expression
+        (constant_expression
+          (litteral
+            (integer)))))))

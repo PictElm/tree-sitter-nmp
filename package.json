@@ -24,5 +24,16 @@
   "devDependencies": {
     "@types/node": "^17.0.32",
     "tree-sitter-cli": "^0.20.6"
-  }
+  },
+  "tree-sitter": [
+    {
+      "file-types": [
+        "nmp",
+        "nml"
+      ],
+      "highlights": [
+        "queries/highlights.scm"
+      ]
+    }
+  ]
 }

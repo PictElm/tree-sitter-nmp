@@ -1,0 +1,53 @@
+===
+if/then
+===
+if some
+	then op some_other = some_more
+endif
+---
+(top_level
+  (specification
+    (top_level_selection
+      (expression
+        (reference_expression
+          (identifier)))
+      (specification
+        (operation_specification
+          (or_operation_specification
+            (identifier)
+            (identifier)))))))
+===
+if/then/else
+===
+if "x86_64" == arch
+	then let some = 64
+	else let some = 32
+endif
+---
+(top_level
+  (specification
+    (top_level_selection
+      (expression
+        (binary_expression
+          (comparison_expression
+            (expression
+              (constant_expression
+                (litteral
+                  (string))))
+            (expression
+              (reference_expression
+                (identifier))))))
+      (specification
+        (let_specification
+          (identifier)
+          (expression
+            (constant_expression
+              (litteral
+                (integer))))))
+      (specification
+        (let_specification
+          (identifier)
+          (expression
+            (constant_expression
+              (litteral
+                (integer)))))))))

@@ -1,0 +1,131 @@
+===
+bool_type
+===
+type some = bool
+---
+(top_level
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (bool_type)))))
+===
+int_type
+===
+type some = int(32)
+---
+(top_level
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (int_type
+          (integer))))))
+===
+card_type
+===
+type some = card(64)
+---
+(top_level
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (card_type
+          (integer))))))
+===
+fix_type
+===
+type some = fix(16, 16)
+---
+(top_level
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (fix_type
+          (integer)
+          (integer))))))
+===
+float_type
+===
+type some = float(23, 8)
+---
+(top_level
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (float_type
+          (integer)
+          (integer))))))
+===
+range_type
+===
+type some = [0..10]
+---
+(top_level
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (range_type
+          (integer)
+          (integer))))))
+===
+enum_type - empty
+===
+type some = enum()
+---
+(top_level
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (enum_type
+          (value
+            (integer
+              (MISSING "integer_token1"))))))))
+===
+enum_type - num
+===
+type some = enum(1)
+---
+(top_level
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (enum_type
+          (value
+            (integer)))))))
+===
+enum_type - num, range, num
+===
+type some = enum(1, 2..3, 4)
+---
+(top_level
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (enum_type
+          (value
+            (integer))
+          (value
+            (integer)
+            (integer))
+          (value
+            (integer)))))))
+===
+named_type
+===
+type some = some_other
+---
+(top_level
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (named_type
+          (identifier))))))

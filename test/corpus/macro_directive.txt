@@ -1,0 +1,25 @@
+===
+macro
+===
+macro coucou(b) = b
+macro blabla(a) =         \
+	if a                  \
+		then let c = 540  \
+		else let z = 202  \
+	endif
+type yes = bool
+---
+(top_level
+  (specification
+    (macro_directive
+      (identifier)
+      (identifier)))
+  (specification
+    (macro_directive
+      (identifier)
+      (identifier)))
+  (specification
+    (type_specification
+      (identifier)
+      (type_expression
+        (bool_type)))))
