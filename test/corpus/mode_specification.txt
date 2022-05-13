@@ -77,30 +77,31 @@ op add(rd: Rwired0, ra: Rwired0, b: R)
         (attributes
           (attribute
             (identifier)
-            (sequence
-              (statement
-                (conditional_statement
-                  (expression
-                    (binary_expression
-                      (comparison_expression
-                        (expression
-                          (reference_expression
-                            (identifier)))
-                        (expression
-                          (constant_expression
-                            (litteral
-                              (integer)))))))
-                  (sequence
-                    (statement
-                      (assignment_statement
-                        (location
-                          (identifier)
+            (block
+              (sequence
+                (statement
+                  (conditional_statement
+                    (expression
+                      (binary_expression
+                        (comparison_expression
                           (expression
                             (reference_expression
-                              (identifier))))
-                        (expression
-                          (reference_expression
-                            (identifier))))))))))
+                              (identifier)))
+                          (expression
+                            (constant_expression
+                              (litteral
+                                (integer)))))))
+                    (sequence
+                      (statement
+                        (assignment_statement
+                          (location
+                            (identifier)
+                            (expression
+                              (reference_expression
+                                (identifier))))
+                          (expression
+                            (reference_expression
+                              (identifier)))))))))))
           (attribute
             (identifier)
             (expression
@@ -137,17 +138,18 @@ op add(rd: Rwired0, ra: Rwired0, b: R)
         (attributes
           (attribute
             (identifier)
-            (sequence
-              (statement
-                (assignment_statement
-                  (location
-                    (identifier)
+            (block
+              (sequence
+                (statement
+                  (assignment_statement
+                    (location
+                      (identifier)
+                      (expression
+                        (reference_expression
+                          (identifier))))
                     (expression
                       (reference_expression
-                        (identifier))))
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                        (identifier))))))))
           (attribute
             (identifier)
             (expression
@@ -218,24 +220,25 @@ op add(rd: Rwired0, ra: Rwired0, b: R)
                       (identifier)))))))
           (attribute
             (identifier)
-            (sequence
-              (statement
-                (assignment_statement
-                  (location
-                    (identifier))
-                  (expression
-                    (binary_expression
-                      (arithmetic_expression
-                        (expression
-                          (reference_expression
-                            (identifier)))
-                        (expression
-                          (reference_expression
-                            (identifier))))))))
-              (statement
-                (action_statement
-                  (identifier)
-                  (identifier))))))))))
+            (block
+              (sequence
+                (statement
+                  (assignment_statement
+                    (location
+                      (identifier))
+                    (expression
+                      (binary_expression
+                        (arithmetic_expression
+                          (expression
+                            (reference_expression
+                              (identifier)))
+                          (expression
+                            (reference_expression
+                              (identifier))))))))
+                (statement
+                  (action_statement
+                    (identifier)
+                    (identifier)))))))))))
 ===
 example 2
 ===
@@ -327,7 +330,8 @@ op STR(r: card(4), addr: AddressMode)
                       (identifier)))))))
           (attribute
             (identifier)
-            (comment))))))
+            (block
+              (comment)))))))
   (specification
     (mode_specification
       (and_mode_specification
@@ -375,7 +379,8 @@ op STR(r: card(4), addr: AddressMode)
                       (identifier)))))))
           (attribute
             (identifier)
-            (comment))))))
+            (block
+              (comment)))))))
   (specification
     (mode_specification
       (or_mode_specification
@@ -423,17 +428,18 @@ op STR(r: card(4), addr: AddressMode)
                       (identifier)))))))
           (attribute
             (identifier)
-            (sequence
-              (statement
-                (assignment_statement
-                  (location
-                    (identifier)
+            (block
+              (sequence
+                (statement
+                  (assignment_statement
+                    (location
+                      (identifier)
+                      (expression
+                        (reference_expression
+                          (identifier))))
                     (expression
                       (reference_expression
-                        (identifier))))
-                  (expression
-                    (reference_expression
-                      (identifier)))))))))))
+                        (identifier))))))))))))
   (specification
     (operation_specification
       (and_operation_specification
@@ -475,14 +481,16 @@ op STR(r: card(4), addr: AddressMode)
                       (identifier)))))))
           (attribute
             (identifier)
-            (sequence
-              (statement
-                (assignment_statement
-                  (location
-                    (identifier))
-                  (expression
-                    (reference_expression
-                      (identifier)
-                      (expression
-                        (reference_expression
-                          (identifier))))))))))))))
+            (block
+              (sequence
+                (statement
+                  (assignment_statement
+                    (location
+                      (identifier))
+                    (expression
+                      (reference_expression
+                        (identifier)
+                        (expression
+                          (reference_expression
+                            (identifier)))))))))))))))
+

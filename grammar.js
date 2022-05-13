@@ -40,7 +40,7 @@ module.exports = grammar({
     let_specification: $ => seq(
       'let', optional('*'), $.identifier,
       optional(seq(':', $.type_expression)),
-      '=', $.expression, // YYY: doc says constant_expression
+      '=', $.expression,
     ),
     register_specification: $ => seq(
       'reg', field('id', $.identifier),
@@ -52,9 +52,9 @@ module.exports = grammar({
       '[', field('ns', $.expression), optional(seq(',', field('t', $.type_expression))), ']',
       optional($.attributes),
     ),
-    variable_specification: $ => seq( // XXX: not documented lol (todo: test behavior)
+    variable_specification: $ => seq(
       'var', field('id', $.identifier),
-      '[', field('ns', $.expression), optional(seq(',', field('t', $.type_expression))), ']',
+      '[', field('ns', $.expression), ',', field('t', $.type_expression), ']',
       optional($.attributes),
     ),
     operation_specification: $ => choice(
@@ -84,8 +84,9 @@ module.exports = grammar({
     attributes: $ => repeat1($.attribute),
     attribute: $ => choice(
       seq('alias', optional('='), $.location), // YYY: sometimes no '=' is ok
-      seq($.identifier, '=', choice($.expression, seq('{', optional($.sequence), '}'))), // TODO: move to eg. '$.block' or something
+      seq($.identifier, '=', choice($.expression, $.block)),
     ),
+    block: $ => seq('{', optional($.sequence), '}'),
 
     location: $ => choice(
       seq(
@@ -308,7 +309,7 @@ function repeatSep(rule, sep) {
 }
 
 function binOpsWithPrec(left, ops, right) {
-  // location in table is prec
+  // location in table is precedence
   const OP_PREC = [
     { '::': 'left' },
     { '||': 'left' },

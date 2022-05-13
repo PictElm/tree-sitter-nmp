@@ -72,14 +72,12 @@
   "include"
   "let"
   "macro"
+  "mem"
   "mode"
-  ; "not" XXX?
   "op"
   "reg"
   "switch"
   "then"
   "type"
-  ; "uses" XXX?
   "var"
-  ; "volatile" XXX?
 ] @keyword

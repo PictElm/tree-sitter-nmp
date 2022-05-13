@@ -25,7 +25,8 @@ op some()
                 (litteral
                   (string)))))
           (attribute
-            (identifier)))))))
+            (identifier)
+            (block)))))))
 ===
 'OR'
 ===
