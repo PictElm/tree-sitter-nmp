@@ -1761,10 +1761,6 @@
     "named": false
   },
   {
-    "type": "alias",
-    "named": false
-  },
-  {
     "type": "bool_type",
     "named": true
   },

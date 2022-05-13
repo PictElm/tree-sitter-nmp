@@ -11,6 +11,7 @@ module.exports = grammar({
   conflicts: $ => [
     [$.bit_field_expression, $.arithmetic_expression, $.comparison_expression],
     [$.bit_field_expression, $.shift_operation, $.comparison_expression],
+    [$.location, $.reference_expression],
   ],
 
   rules: {
@@ -82,10 +83,7 @@ module.exports = grammar({
     other_directive: $ => seq('#', token.immediate(/[a-zA-Z_][a-zA-Z_0-9]*/), /.*/),
 
     attributes: $ => repeat1($.attribute),
-    attribute: $ => choice(
-      seq('alias', optional('='), $.location), // YYY: sometimes no '=' is ok
-      seq($.identifier, '=', choice($.expression, $.block)),
-    ),
+    attribute: $ => seq($.identifier, '=', choice($.location, $.expression, $.block)),
     block: $ => seq('{', optional($.sequence), '}'),
 
     location: $ => choice(

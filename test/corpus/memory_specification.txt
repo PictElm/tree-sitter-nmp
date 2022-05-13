@@ -45,7 +45,7 @@ mem M[4*1024]
 aliased
 ===
 mem M32[4*1024, card(32)]
-mem M16[4*1024, card(16)] alias M32
+mem M16[4*1024, card(16)] alias = M32
 ---
 (top_level
   (specification
@@ -84,5 +84,6 @@ mem M16[4*1024, card(16)] alias M32
           (integer)))
       (attributes
         (attribute
+          (identifier)
           (location
             (identifier)))))))
