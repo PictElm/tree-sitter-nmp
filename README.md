@@ -8,3 +8,4 @@ nMP is derivated from the Sim-nML language
 References
 
 * [Original Thesis (Sim-nML)](https://www.cse.iitk.ac.in/users/moona/students/9611123.pdf/)
+* [See also: OTAWA/GLISS V2](https://github.com/alexjordan/otawa/tree/master/gliss2)

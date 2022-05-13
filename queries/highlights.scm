@@ -56,6 +56,7 @@
 ] @punctuation.bracket
 
 [
+  "canon"
   "case"
   "coerce"
   "default"
@@ -63,6 +64,7 @@
   "else"
   "enddo"
   "endif"
+  "extend"
   "for"
   "format"
   "if"

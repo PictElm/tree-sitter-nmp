@@ -24,6 +24,7 @@ module.exports = grammar({
       $.variable_specification,
       $.operation_specification,
       $.mode_specification,
+      $.extend_specification,
       $.top_level_selection,
       $.macro_directive,
       $.include_directive,
@@ -62,6 +63,10 @@ module.exports = grammar({
     mode_specification: $ => choice(
       $.or_mode_specification,
       $.and_mode_specification,
+    ),
+    extend_specification: $ => seq(
+      'extend', repeatSep1($.identifier, ','),
+      $.attributes,
     ),
     top_level_selection: $ => seq(
       'if', $.expression,
@@ -137,7 +142,7 @@ module.exports = grammar({
     ),
     canon_statement: $ => choice(
       seq($.string, '(', optional($.arguments), ')'),
-      seq('canonical', '(', $.string, optional(seq(',', $.arguments)), ')'),
+      seq('canon', '(', $.string, optional(seq(',', $.arguments)), ')'),
     ),
     call_statement: $ => seq($.identifier, '(', optional($.arguments), ')'),
     let_statement: $ => seq(
@@ -239,10 +244,10 @@ module.exports = grammar({
 
     identifier: $ => /[a-zA-Z_][a-zA-Z_0-9]*/,
     // reserved keywords:
-    // _attr     action  field      bool
+    // _attr     action  field      bool     canon
     // card      case    coerce     default
     // do        else    enddo      endif
-    // enum      error   exception  false
+    // enum      error   exception  extend   false
     // fix       float   for        format
     // if        image   in         include  initial
     // int       let     macro      mode

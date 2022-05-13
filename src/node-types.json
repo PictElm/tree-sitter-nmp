@@ -535,6 +535,25 @@
     }
   },
   {
+    "type": "extend_specification",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "attributes",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "fix_type",
     "named": true,
     "fields": {
@@ -1203,6 +1222,10 @@
           "named": true
         },
         {
+          "type": "extend_specification",
+          "named": true
+        },
+        {
           "type": "include_directive",
           "named": true
         },
@@ -1677,7 +1700,7 @@
     "named": true
   },
   {
-    "type": "canonical",
+    "type": "canon",
     "named": false
   },
   {
@@ -1714,6 +1737,10 @@
   },
   {
     "type": "enum",
+    "named": false
+  },
+  {
+    "type": "extend",
     "named": false
   },
   {
