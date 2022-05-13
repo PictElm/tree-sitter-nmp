@@ -7,11 +7,38 @@
 (string) @string
 
 ((identifier) @constant
-  (#match? @constant "^[A-Z][A-Z\\d_]*$"))
+  (#match? @constant "^[A-Z][A-Z_0-9]*$"))
 (identifier) @variable
+(canon_variable_declaration
+  ((string) @constant
+    (#match? @constant "^[A-Z][A-Z_0-9]*$")))
+(canon_variable_declaration
+  (string) @variable)
 
 (type_expression) @type
-(type_specification (identifier) @type)
+(type_specification
+  (identifier) @type)
+(mode_specification
+  (and_mode_specification
+    (identifier) @type))
+(extend_specification
+  (identifier) @type)
+
+(operation_specification
+  (and_operation_specification
+    (identifier) @function))
+(canon_function_declaration
+  (string) @function)
+(canon_procedure_declaration
+  (string) @function)
+(call_statement
+  (identifier) @function)
+(call_expression
+  (identifier) @function)
+(canon_statement
+  (string) @function)
+(canon_expression
+  (string) @function)
 
 (other_directive) @keyword
 
@@ -56,6 +83,7 @@
 ] @punctuation.bracket
 
 [
+  "__attr"
   "canon"
   "case"
   "coerce"

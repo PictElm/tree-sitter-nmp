@@ -293,7 +293,7 @@
     }
   },
   {
-    "type": "canon_specification",
+    "type": "canon_expression",
     "named": true,
     "fields": {},
     "children": {
@@ -301,9 +301,43 @@
       "required": true,
       "types": [
         {
-          "type": "parameter",
+          "type": "arguments",
           "named": true
         },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "canon_function_declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "type_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "canon_procedure_declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
         {
           "type": "string",
           "named": true
@@ -329,6 +363,25 @@
         },
         {
           "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "canon_variable_declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "type_specification",
           "named": true
         }
       ]
@@ -554,6 +607,10 @@
         },
         {
           "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "canon_expression",
           "named": true
         },
         {
@@ -1287,7 +1344,15 @@
       "required": true,
       "types": [
         {
-          "type": "canon_specification",
+          "type": "canon_function_declaration",
+          "named": true
+        },
+        {
+          "type": "canon_procedure_declaration",
+          "named": true
+        },
+        {
+          "type": "canon_variable_declaration",
           "named": true
         },
         {
@@ -1766,6 +1831,10 @@
   },
   {
     "type": "_",
+    "named": false
+  },
+  {
+    "type": "__attr",
     "named": false
   },
   {

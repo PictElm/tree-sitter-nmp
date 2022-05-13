@@ -26,7 +26,9 @@ module.exports = grammar({
       $.operation_specification,
       $.mode_specification,
       $.extend_specification,
-      $.canon_specification,
+      $.canon_function_declaration,
+      $.canon_procedure_declaration,
+      $.canon_variable_declaration,
       $.top_level_selection,
       $.macro_directive,
       $.include_directive,
@@ -70,9 +72,16 @@ module.exports = grammar({
       'extend', repeatSep1($.identifier, ','),
       $.attributes,
     ),
-    canon_specification: $ => seq(
-      'canon', optional($.type_expression), $.string,
-      '(', repeatSep($.parameter, ','), ')',
+    canon_function_declaration: $ => seq(
+      'canon', $.type_expression, $.string,
+      '(', repeatSep($.type_expression, ','), ')',
+    ),
+    canon_procedure_declaration: $ => seq(
+      'canon', $.string,
+      '(', repeatSep($.type_expression, ','), ')',
+    ),
+    canon_variable_declaration: $ => seq(
+      'canon', $.type_specification, $.string,
     ),
     top_level_selection: $ => seq(
       'if', $.expression,
@@ -83,7 +92,10 @@ module.exports = grammar({
     other_directive: $ => seq('#', token.immediate(/[a-zA-Z_][a-zA-Z_0-9]*/), /.*/),
 
     attributes: $ => repeat1($.attribute),
-    attribute: $ => seq($.identifier, '=', choice($.location, $.expression, $.block)),
+    attribute: $ => choice(
+      seq('__attr', '(', $.identifier, ')'),
+      seq($.identifier, '=', choice($.location, $.expression, $.block))
+    ),
     block: $ => seq('{', optional($.sequence), '}'),
 
     location: $ => choice(
@@ -149,7 +161,7 @@ module.exports = grammar({
       '{', repeat($.case), optional($.default), '}',
     ),
     canon_statement: $ => choice(
-      seq($.string, '(', optional($.arguments), ')'),
+      seq($.string, '(', optional($.arguments), ')'), // YYY:?
       seq('canon', '(', $.string, optional(seq(',', $.arguments)), ')'),
     ),
     call_statement: $ => seq($.identifier, '(', optional($.arguments), ')'),
@@ -168,9 +180,10 @@ module.exports = grammar({
     case: $ => seq('case', field('v', $.expression), ':', field('r', $.expression)),
     default: $ => seq('default', ':', field('r', $.expression)),
 
-    expression: $ => choice(
+    expression: $ => choice( // YYY: @"IDENT" syntax?
       $.constant_expression,
       $.reference_expression,
+      $.canon_expression,
       $.call_expression,
       $.dotted_expression,
       $.unary_expression,
@@ -184,6 +197,7 @@ module.exports = grammar({
     ),
     constant_expression: $ => $.litteral,
     reference_expression: $ => seq($.identifier, optional(seq('[', field('i', $.expression), ']'))),
+    canon_expression: $ => seq($.string, '(', optional($.arguments), ')'), // YYY:?
     call_expression: $ => seq($.identifier, '(', optional($.arguments), ')'),
     dotted_expression: $ => seq(field('pid', $.identifier), '.', field('cid', $.identifier)),
     unary_expression: $ => choice(
