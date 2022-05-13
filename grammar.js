@@ -246,25 +246,13 @@ module.exports = grammar({
 
     macro_directive: $ => seq(
       'macro', $.identifier,
-      '(', repeatSep($.identifier, ','), ')',
-      '=', /([^\r\n]|\\\r?\n)*\r?\n/
+      optional(seq('(', repeatSep($.identifier, ','), ')')),
+      '=', optional(alias(/([^\n]|\\\r?\n)*/, $.body)), optional('\n'),
     ),
     include_directive: $ => seq('include', $.string),
     delayed_include_directive: $ => seq('include', optional(choice('-', '_')), 'op', $.string),
 
     identifier: $ => /[a-zA-Z_][a-zA-Z_0-9]*/,
-    // reserved keywords:
-    // _attr     action  field      bool     canon
-    // card      case    coerce     default
-    // do        else    enddo      endif
-    // enum      error   exception  extend   false
-    // fix       float   for        format
-    // if        image   in         include  initial
-    // int       let     macro      mode
-    // not       op      ports      reg
-    // resource  switch  syntax     then
-    // true      type    uses       var
-    // volatile
 
     litteral: $ => choice(
       $.boolean,
@@ -307,7 +295,7 @@ function repeatSep(rule, sep) {
 }
 
 function binOpsWithPrec(left, ops, right) {
-  // location in table is precedence
+  // index in table is precedence
   const OP_PREC = [
     { '::': 'left' },
     { '||': 'left' },

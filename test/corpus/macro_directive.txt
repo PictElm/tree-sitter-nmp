@@ -13,13 +13,42 @@ type yes = bool
   (specification
     (macro_directive
       (identifier)
-      (identifier)))
+      (identifier)
+      (body)))
   (specification
     (macro_directive
       (identifier)
-      (identifier)))
+      (identifier)
+      (body)))
   (specification
     (type_specification
       (identifier)
       (type_expression
         (bool_type)))))
+===
+macro 2
+===
+macro some = coucou
+macro other(a) = a
+if potato then endif
+macro but(z) =
+---
+(top_level
+  (specification
+    (macro_directive
+      (identifier)
+      (body)))
+  (specification
+    (macro_directive
+      (identifier)
+      (identifier)
+      (body)))
+  (specification
+    (top_level_selection
+      (expression
+        (reference_expression
+          (identifier)))))
+  (specification
+    (macro_directive
+      (identifier)
+      (identifier))))

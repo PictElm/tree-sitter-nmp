@@ -956,6 +956,10 @@
       "required": true,
       "types": [
         {
+          "type": "body",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         }
@@ -1617,6 +1621,10 @@
     }
   },
   {
+    "type": "\n",
+    "named": false
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -1759,6 +1767,10 @@
   {
     "type": "_",
     "named": false
+  },
+  {
+    "type": "body",
+    "named": true
   },
   {
     "type": "bool_type",
