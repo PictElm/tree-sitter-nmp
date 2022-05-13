@@ -25,11 +25,12 @@ module.exports = grammar({
       $.operation_specification,
       $.mode_specification,
       $.extend_specification,
+      $.canon_specification,
       $.top_level_selection,
       $.macro_directive,
       $.include_directive,
       $.delayed_include_directive,
-      $.other_directive, // YYY: e.g. '#line n,m file.ext'
+      $.other_directive,
     ),
 
     type_specification: $ => seq(
@@ -68,6 +69,10 @@ module.exports = grammar({
       'extend', repeatSep1($.identifier, ','),
       $.attributes,
     ),
+    canon_specification: $ => seq(
+      'canon', optional($.type_expression), $.string,
+      '(', repeatSep($.parameter, ','), ')',
+    ),
     top_level_selection: $ => seq(
       'if', $.expression,
       'then', repeat($.specification),
@@ -79,7 +84,7 @@ module.exports = grammar({
     attributes: $ => repeat1($.attribute),
     attribute: $ => choice(
       seq('alias', optional('='), $.location), // YYY: sometimes no '=' is ok
-      seq($.identifier, '=', choice($.expression, seq('{', optional($.sequence), '}'))),
+      seq($.identifier, '=', choice($.expression, seq('{', optional($.sequence), '}'))), // TODO: move to eg. '$.block' or something
     ),
 
     location: $ => choice(
@@ -116,7 +121,11 @@ module.exports = grammar({
       optional($.attributes),
     ),
 
-    sequence: $ => repeat1($.statement),
+    // allow for '#' directives (eg. as result from preprocessing)
+    sequence: $ => repeat1(choice(
+      $.statement,
+      $.other_directive,
+    )),
     statement: $ => seq(choice(
       $.action_statement,
       $.assignment_statement,
@@ -163,6 +172,7 @@ module.exports = grammar({
     expression: $ => choice(
       $.constant_expression,
       $.reference_expression,
+      $.call_expression,
       $.dotted_expression,
       $.unary_expression,
       $.binary_expression,
@@ -175,6 +185,7 @@ module.exports = grammar({
     ),
     constant_expression: $ => $.litteral,
     reference_expression: $ => seq($.identifier, optional(seq('[', field('i', $.expression), ']'))),
+    call_expression: $ => seq($.identifier, '(', optional($.arguments), ')'),
     dotted_expression: $ => seq(field('pid', $.identifier), '.', field('cid', $.identifier)),
     unary_expression: $ => choice(
       seq('+', $.expression),
@@ -278,7 +289,7 @@ module.exports = grammar({
 
     comment: $ => choice(
       seq('//', /.*/),
-      seq('/*', /(\*[^/]|[^*])*/, '*/'),
+      seq('/*', /(\*[^\/]|[^*])*/, '*/'),
     ),
 
   },

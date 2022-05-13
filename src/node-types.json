@@ -240,6 +240,25 @@
     "fields": {}
   },
   {
+    "type": "call_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "arguments",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "call_statement",
     "named": true,
     "fields": {},
@@ -253,6 +272,29 @@
         },
         {
           "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "canon_specification",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "parameter",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "type_expression",
           "named": true
         }
       ]
@@ -493,6 +535,10 @@
         },
         {
           "type": "bit_field_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression",
           "named": true
         },
         {
@@ -1188,6 +1234,10 @@
       "required": true,
       "types": [
         {
+          "type": "other_directive",
+          "named": true
+        },
+        {
           "type": "statement",
           "named": true
         }
@@ -1217,6 +1267,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "canon_specification",
+          "named": true
+        },
         {
           "type": "delayed_include_directive",
           "named": true
