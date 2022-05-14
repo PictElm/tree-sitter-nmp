@@ -7,20 +7,24 @@ mem M[4*1024, card(16)]
   (specification
     (memory_specification
       (identifier)
-      (expression
-        (binary_expression
-          (arithmetic_expression
+      (mem_part
+        (expression
+          (binary_expression
+            (arithmetic_expression
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer))))
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer)))))))
+        (type_expression
+          (card_type
             (expression
               (constant_expression
                 (litteral
-                  (integer))))
-            (expression
-              (constant_expression
-                (litteral
-                  (integer)))))))
-      (type_expression
-        (card_type
-          (integer))))))
+                  (integer))))))))))
 ===
 untyped
 ===
@@ -30,17 +34,18 @@ mem M[4*1024]
   (specification
     (memory_specification
       (identifier)
-      (expression
-        (binary_expression
-          (arithmetic_expression
-            (expression
-              (constant_expression
-                (litteral
-                  (integer))))
-            (expression
-              (constant_expression
-                (litteral
-                  (integer))))))))))
+      (mem_part
+        (expression
+          (binary_expression
+            (arithmetic_expression
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer))))
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer)))))))))))
 ===
 aliased
 ===
@@ -51,37 +56,45 @@ mem M16[4*1024, card(16)] alias = M32
   (specification
     (memory_specification
       (identifier)
-      (expression
-        (binary_expression
-          (arithmetic_expression
+      (mem_part
+        (expression
+          (binary_expression
+            (arithmetic_expression
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer))))
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer)))))))
+        (type_expression
+          (card_type
             (expression
               (constant_expression
                 (litteral
-                  (integer))))
-            (expression
-              (constant_expression
-                (litteral
-                  (integer)))))))
-      (type_expression
-        (card_type
-          (integer)))))
+                  (integer)))))))))
   (specification
     (memory_specification
       (identifier)
-      (expression
-        (binary_expression
-          (arithmetic_expression
-            (expression
-              (constant_expression
-                (litteral
-                  (integer))))
+      (mem_part
+        (expression
+          (binary_expression
+            (arithmetic_expression
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer))))
+              (expression
+                (constant_expression
+                  (litteral
+                    (integer)))))))
+        (type_expression
+          (card_type
             (expression
               (constant_expression
                 (litteral
                   (integer)))))))
-      (type_expression
-        (card_type
-          (integer)))
       (attributes
         (attribute
           (identifier)

@@ -1,28 +1,18 @@
-(ERROR) @error
-(comment) @comment
-
-(boolean) @constant.builtin
-(integer) @number
-(real) @number
-(string) @string
-
 ((identifier) @constant
   (#match? @constant "^[A-Z][A-Z_0-9]*$"))
-(identifier) @variable
 (canon_variable_declaration
   ((string) @constant
-    (#match? @constant "^[A-Z][A-Z_0-9]*$")))
+    (#match? @constant "^\"[A-Z][A-Z_0-9]*\"$"))) ; that ever matches? (missing ""?)
 (canon_variable_declaration
   (string) @variable)
 
-(type_expression) @type
 (type_specification
   (identifier) @type)
 (mode_specification
   (and_mode_specification
     (identifier) @type))
 (extend_specification
-  (identifier) @type)
+  (identifier) @type) ; test with multiple
 
 (operation_specification
   (and_operation_specification
@@ -92,6 +82,7 @@
   "else"
   "enddo"
   "endif"
+  "error"
   "extend"
   "for"
   "format"
@@ -109,3 +100,14 @@
   "type"
   "var"
 ] @keyword
+
+(ERROR) @error
+(comment) @comment
+
+(boolean) @constant.builtin
+(integer) @number
+(real) @number
+(string) @string
+
+(identifier) @variable
+(type_expression) @type

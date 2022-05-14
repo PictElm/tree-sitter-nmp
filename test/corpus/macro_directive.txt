@@ -13,12 +13,14 @@ type yes = bool
   (specification
     (macro_directive
       (identifier)
-      (identifier)
+      (macro_parameters
+        (identifier))
       (body)))
   (specification
     (macro_directive
       (identifier)
-      (identifier)
+      (macro_parameters
+        (identifier))
       (body)))
   (specification
     (type_specification
@@ -41,7 +43,8 @@ macro but(z) =
   (specification
     (macro_directive
       (identifier)
-      (identifier)
+      (macro_parameters
+        (identifier))
       (body)))
   (specification
     (top_level_selection
@@ -51,4 +54,5 @@ macro but(z) =
   (specification
     (macro_directive
       (identifier)
-      (identifier))))
+      (macro_parameters
+        (identifier)))))

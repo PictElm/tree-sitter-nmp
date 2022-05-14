@@ -9,7 +9,10 @@ let some: card(2) = 2
       (identifier)
       (type_expression
         (card_type
-          (integer)))
+          (expression
+            (constant_expression
+              (litteral
+                (integer))))))
       (expression
         (constant_expression
           (litteral
@@ -38,7 +41,10 @@ let* some: card(2) = 2
       (identifier)
       (type_expression
         (card_type
-          (integer)))
+          (expression
+            (constant_expression
+              (litteral
+                (integer))))))
       (expression
         (constant_expression
           (litteral

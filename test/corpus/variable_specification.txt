@@ -7,10 +7,14 @@ var TMP[1, int(32)]
   (specification
     (variable_specification
       (identifier)
-      (expression
-        (constant_expression
-          (litteral
-            (integer))))
-      (type_expression
-        (int_type
-          (integer))))))
+      (reg_part
+        (expression
+          (constant_expression
+            (litteral
+              (integer))))
+        (type_expression
+          (int_type
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))))))))

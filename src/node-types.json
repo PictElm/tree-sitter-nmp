@@ -42,7 +42,7 @@
           "named": true
         },
         {
-          "type": "parameter",
+          "type": "parameters",
           "named": true
         }
       ]
@@ -65,14 +65,14 @@
     },
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "attributes",
           "named": true
         },
         {
-          "type": "parameter",
+          "type": "parameters",
           "named": true
         }
       ]
@@ -84,7 +84,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expression",
@@ -213,10 +213,40 @@
       "required": true,
       "types": [
         {
+          "type": "bit_field_part",
+          "named": true
+        },
+        {
           "type": "expression",
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "bit_field_part",
+    "named": true,
+    "fields": {
+      "low": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "up": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -326,6 +356,10 @@
         {
           "type": "type_expression",
           "named": true
+        },
+        {
+          "type": "type_list",
+          "named": true
         }
       ]
     }
@@ -343,7 +377,7 @@
           "named": true
         },
         {
-          "type": "type_expression",
+          "type": "type_list",
           "named": true
         }
       ]
@@ -381,7 +415,7 @@
           "named": true
         },
         {
-          "type": "type_specification",
+          "type": "type_expression",
           "named": true
         }
       ]
@@ -396,7 +430,7 @@
         "required": true,
         "types": [
           {
-            "type": "integer",
+            "type": "expression",
             "named": true
           }
         ]
@@ -434,15 +468,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "expression",
-          "named": true
-        },
-        {
-          "type": "type_expression",
+          "type": "type_coerce_part",
           "named": true
         }
       ]
@@ -583,7 +613,37 @@
       "required": true,
       "types": [
         {
-          "type": "value",
+          "type": "enum_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "enum_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "error_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string",
           "named": true
         }
       ]
@@ -626,15 +686,15 @@
           "named": true
         },
         {
-          "type": "expression",
-          "named": true
-        },
-        {
           "type": "format_expression",
           "named": true
         },
         {
           "type": "if_expression",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
           "named": true
         },
         {
@@ -680,7 +740,7 @@
         "required": true,
         "types": [
           {
-            "type": "integer",
+            "type": "expression",
             "named": true
           }
         ]
@@ -690,7 +750,7 @@
         "required": true,
         "types": [
           {
-            "type": "integer",
+            "type": "expression",
             "named": true
           }
         ]
@@ -706,7 +766,7 @@
         "required": true,
         "types": [
           {
-            "type": "integer",
+            "type": "expression",
             "named": true
           }
         ]
@@ -716,7 +776,7 @@
         "required": true,
         "types": [
           {
-            "type": "integer",
+            "type": "expression",
             "named": true
           }
         ]
@@ -778,7 +838,7 @@
       "required": true,
       "types": [
         {
-          "type": "arguments",
+          "type": "expression",
           "named": true
         },
         {
@@ -840,6 +900,22 @@
     }
   },
   {
+    "type": "index_part",
+    "named": true,
+    "fields": {
+      "index": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "int_type",
     "named": true,
     "fields": {
@@ -848,7 +924,7 @@
         "required": true,
         "types": [
           {
-            "type": "integer",
+            "type": "expression",
             "named": true
           }
         ]
@@ -946,42 +1022,20 @@
             "named": true
           }
         ]
-      },
-      "index": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "low": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "up": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "bit_field_part",
+          "named": true
+        },
+        {
+          "type": "index_part",
+          "named": true
+        },
         {
           "type": "location",
           "named": true
@@ -1019,8 +1073,53 @@
         {
           "type": "identifier",
           "named": true
+        },
+        {
+          "type": "macro_parameters",
+          "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "macro_parameters",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "mem_part",
+    "named": true,
+    "fields": {
+      "size": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type_expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1036,34 +1135,18 @@
             "named": true
           }
         ]
-      },
-      "ns": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "t": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "type_expression",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "attributes",
+          "named": true
+        },
+        {
+          "type": "mem_part",
           "named": true
         }
       ]
@@ -1199,6 +1282,36 @@
     }
   },
   {
+    "type": "parameters",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "parameter",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "parenthesized_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "range_type",
     "named": true,
     "fields": {
@@ -1207,7 +1320,7 @@
         "required": true,
         "types": [
           {
-            "type": "integer",
+            "type": "expression",
             "named": true
           }
         ]
@@ -1217,7 +1330,7 @@
         "required": true,
         "types": [
           {
-            "type": "integer",
+            "type": "expression",
             "named": true
           }
         ]
@@ -1232,46 +1345,29 @@
   {
     "type": "reference_expression",
     "named": true,
-    "fields": {
-      "i": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "index_part",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "register_specification",
+    "type": "reg_part",
     "named": true,
     "fields": {
-      "id": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
       "size": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "expression",
@@ -1289,13 +1385,33 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "register_specification",
+    "named": true,
+    "fields": {
+      "id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
     },
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "attributes",
+          "named": true
+        },
+        {
+          "type": "reg_part",
           "named": true
         }
       ]
@@ -1439,6 +1555,10 @@
           "named": true
         },
         {
+          "type": "error_statement",
+          "named": true
+        },
+        {
           "type": "for_statement",
           "named": true
         },
@@ -1454,20 +1574,9 @@
     }
   },
   {
-    "type": "switch_expression",
+    "type": "switch_body",
     "named": true,
-    "fields": {
-      "c": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
@@ -1484,6 +1593,32 @@
     }
   },
   {
+    "type": "switch_expression",
+    "named": true,
+    "fields": {
+      "c": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "switch_body",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "switch_statement",
     "named": true,
     "fields": {
@@ -1492,22 +1627,18 @@
         "required": true,
         "types": [
           {
-            "type": "expression",
+            "type": "parenthesized_expression",
             "named": true
           }
         ]
       }
     },
     "children": {
-      "multiple": true,
-      "required": false,
+      "multiple": false,
+      "required": true,
       "types": [
         {
-          "type": "case",
-          "named": true
-        },
-        {
-          "type": "default",
+          "type": "switch_body",
           "named": true
         }
       ]
@@ -1542,6 +1673,25 @@
         },
         {
           "type": "specification",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_coerce_part",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "type_expression",
           "named": true
         }
       ]
@@ -1591,6 +1741,21 @@
     }
   },
   {
+    "type": "type_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "type_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "type_specification",
     "named": true,
     "fields": {},
@@ -1625,21 +1790,6 @@
     }
   },
   {
-    "type": "value",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "integer",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "variable_specification",
     "named": true,
     "fields": {
@@ -1652,34 +1802,18 @@
             "named": true
           }
         ]
-      },
-      "ns": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "t": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "type_expression",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "attributes",
+          "named": true
+        },
+        {
+          "type": "reg_part",
           "named": true
         }
       ]
@@ -1883,6 +2017,10 @@
   },
   {
     "type": "enum",
+    "named": false
+  },
+  {
+    "type": "error",
     "named": false
   },
   {

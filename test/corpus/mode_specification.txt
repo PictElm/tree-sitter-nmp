@@ -26,32 +26,44 @@ op add(rd: Rwired0, ra: Rwired0, b: R)
   (specification
     (register_specification
       (identifier)
-      (expression
-        (constant_expression
-          (litteral
-            (integer))))
-      (type_expression
-        (int_type
-          (integer)))))
+      (reg_part
+        (expression
+          (constant_expression
+            (litteral
+              (integer))))
+        (type_expression
+          (int_type
+            (expression
+              (constant_expression
+                (litteral
+                  (integer)))))))))
   (specification
     (variable_specification
       (identifier)
-      (expression
-        (constant_expression
-          (litteral
-            (integer))))
-      (type_expression
-        (int_type
-          (integer)))))
+      (reg_part
+        (expression
+          (constant_expression
+            (litteral
+              (integer))))
+        (type_expression
+          (int_type
+            (expression
+              (constant_expression
+                (litteral
+                  (integer)))))))))
   (specification
     (mode_specification
       (and_mode_specification
         (identifier)
-        (parameter
-          (identifier)
-          (type_expression
-            (card_type
-              (integer))))
+        (parameters
+          (parameter
+            (identifier)
+            (type_expression
+              (card_type
+                (expression
+                  (constant_expression
+                    (litteral
+                      (integer))))))))
         (expression
           (if_expression
             (expression
@@ -71,9 +83,10 @@ op add(rd: Rwired0, ra: Rwired0, b: R)
             (expression
               (reference_expression
                 (identifier)
-                (expression
-                  (reference_expression
-                    (identifier)))))))
+                (index_part
+                  (expression
+                    (reference_expression
+                      (identifier))))))))
         (attributes
           (attribute
             (identifier)
@@ -96,9 +109,10 @@ op add(rd: Rwired0, ra: Rwired0, b: R)
                         (assignment_statement
                           (location
                             (identifier)
-                            (expression
-                              (reference_expression
-                                (identifier))))
+                            (index_part
+                              (expression
+                                (reference_expression
+                                  (identifier)))))
                           (expression
                             (reference_expression
                               (identifier)))))))))))
@@ -107,34 +121,37 @@ op add(rd: Rwired0, ra: Rwired0, b: R)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                (expression
+                  (reference_expression
+                    (identifier))))))
           (attribute
             (identifier)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))))))))))
+                (expression
+                  (reference_expression
+                    (identifier))))))))))
   (specification
     (mode_specification
       (and_mode_specification
         (identifier)
-        (parameter
-          (identifier)
-          (type_expression
-            (card_type
-              (integer))))
+        (parameters
+          (parameter
+            (identifier)
+            (type_expression
+              (card_type
+                (expression
+                  (constant_expression
+                    (litteral
+                      (integer))))))))
         (expression
           (reference_expression
             (identifier)
-            (expression
-              (reference_expression
-                (identifier)))))
+            (index_part
+              (expression
+                (reference_expression
+                  (identifier))))))
         (attributes
           (attribute
             (identifier)
@@ -144,9 +161,10 @@ op add(rd: Rwired0, ra: Rwired0, b: R)
                   (assignment_statement
                     (location
                       (identifier)
-                      (expression
-                        (reference_expression
-                          (identifier))))
+                      (index_part
+                        (expression
+                          (reference_expression
+                            (identifier)))))
                     (expression
                       (reference_expression
                         (identifier))))))))
@@ -155,69 +173,66 @@ op add(rd: Rwired0, ra: Rwired0, b: R)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                (expression
+                  (reference_expression
+                    (identifier))))))
           (attribute
             (identifier)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))))))))))
+                (expression
+                  (reference_expression
+                    (identifier))))))))))
   (specification
     (operation_specification
       (and_operation_specification
         (identifier)
-        (parameter
-          (identifier)
-          (type_expression
-            (named_type
-              (identifier))))
-        (parameter
-          (identifier)
-          (type_expression
-            (named_type
-              (identifier))))
-        (parameter
-          (identifier)
-          (type_expression
-            (named_type
-              (identifier))))
+        (parameters
+          (parameter
+            (identifier)
+            (type_expression
+              (named_type
+                (identifier))))
+          (parameter
+            (identifier)
+            (type_expression
+              (named_type
+                (identifier))))
+          (parameter
+            (identifier)
+            (type_expression
+              (named_type
+                (identifier)))))
         (attributes
           (attribute
             (identifier)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))
-                  (expression
-                    (reference_expression
-                      (identifier)))
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                (expression
+                  (reference_expression
+                    (identifier)))
+                (expression
+                  (reference_expression
+                    (identifier)))
+                (expression
+                  (reference_expression
+                    (identifier))))))
           (attribute
             (identifier)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))
-                  (expression
-                    (reference_expression
-                      (identifier)))
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                (expression
+                  (reference_expression
+                    (identifier)))
+                (expression
+                  (reference_expression
+                    (identifier)))
+                (expression
+                  (reference_expression
+                    (identifier))))))
           (attribute
             (identifier)
             (block
@@ -269,65 +284,81 @@ op STR(r: card(4), addr: AddressMode)
   (specification
     (register_specification
       (identifier)
-      (expression
-        (constant_expression
-          (litteral
-            (integer))))
-      (type_expression
-        (int_type
-          (integer)))))
+      (reg_part
+        (expression
+          (constant_expression
+            (litteral
+              (integer))))
+        (type_expression
+          (int_type
+            (expression
+              (constant_expression
+                (litteral
+                  (integer)))))))))
   (specification
     (memory_specification
       (identifier)
-      (expression
-        (constant_expression
-          (litteral
-            (integer))))
-      (type_expression
-        (card_type
-          (integer)))))
+      (mem_part
+        (expression
+          (constant_expression
+            (litteral
+              (integer))))
+        (type_expression
+          (card_type
+            (expression
+              (constant_expression
+                (litteral
+                  (integer)))))))))
   (specification
     (mode_specification
       (and_mode_specification
         (identifier)
-        (parameter
-          (identifier)
-          (type_expression
-            (card_type
-              (integer))))
-        (parameter
-          (identifier)
-          (type_expression
-            (int_type
-              (integer))))
+        (parameters
+          (parameter
+            (identifier)
+            (type_expression
+              (card_type
+                (expression
+                  (constant_expression
+                    (litteral
+                      (integer)))))))
+          (parameter
+            (identifier)
+            (type_expression
+              (int_type
+                (expression
+                  (constant_expression
+                    (litteral
+                      (integer))))))))
         (expression
           (reference_expression
             (identifier)
-            (expression
-              (binary_expression
-                (arithmetic_expression
-                  (expression
-                    (reference_expression
-                      (identifier)
-                      (expression
-                        (reference_expression
-                          (identifier)))))
-                  (expression
-                    (reference_expression
-                      (identifier))))))))
+            (index_part
+              (expression
+                (binary_expression
+                  (arithmetic_expression
+                    (expression
+                      (reference_expression
+                        (identifier)
+                        (index_part
+                          (expression
+                            (reference_expression
+                              (identifier))))))
+                    (expression
+                      (reference_expression
+                        (identifier)))))))))
         (attributes
           (attribute
             (identifier)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                (expression
+                  (reference_expression
+                    (identifier)))
+                (expression
+                  (reference_expression
+                    (identifier))))))
           (attribute
             (identifier)
             (block
@@ -336,47 +367,56 @@ op STR(r: card(4), addr: AddressMode)
     (mode_specification
       (and_mode_specification
         (identifier)
-        (parameter
-          (identifier)
-          (type_expression
-            (card_type
-              (integer))))
-        (parameter
-          (identifier)
-          (type_expression
-            (card_type
-              (integer))))
+        (parameters
+          (parameter
+            (identifier)
+            (type_expression
+              (card_type
+                (expression
+                  (constant_expression
+                    (litteral
+                      (integer)))))))
+          (parameter
+            (identifier)
+            (type_expression
+              (card_type
+                (expression
+                  (constant_expression
+                    (litteral
+                      (integer))))))))
         (expression
           (reference_expression
             (identifier)
-            (expression
-              (binary_expression
-                (arithmetic_expression
-                  (expression
-                    (reference_expression
-                      (identifier)
-                      (expression
-                        (reference_expression
-                          (identifier)))))
-                  (expression
-                    (reference_expression
-                      (identifier)
-                      (expression
-                        (reference_expression
-                          (identifier))))))))))
+            (index_part
+              (expression
+                (binary_expression
+                  (arithmetic_expression
+                    (expression
+                      (reference_expression
+                        (identifier)
+                        (index_part
+                          (expression
+                            (reference_expression
+                              (identifier))))))
+                    (expression
+                      (reference_expression
+                        (identifier)
+                        (index_part
+                          (expression
+                            (reference_expression
+                              (identifier))))))))))))
         (attributes
           (attribute
             (identifier)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                (expression
+                  (reference_expression
+                    (identifier)))
+                (expression
+                  (reference_expression
+                    (identifier))))))
           (attribute
             (identifier)
             (block
@@ -391,41 +431,43 @@ op STR(r: card(4), addr: AddressMode)
     (operation_specification
       (and_operation_specification
         (identifier)
-        (parameter
-          (identifier)
-          (type_expression
-            (card_type
-              (integer))))
-        (parameter
-          (identifier)
-          (type_expression
-            (named_type
-              (identifier))))
+        (parameters
+          (parameter
+            (identifier)
+            (type_expression
+              (card_type
+                (expression
+                  (constant_expression
+                    (litteral
+                      (integer)))))))
+          (parameter
+            (identifier)
+            (type_expression
+              (named_type
+                (identifier)))))
         (attributes
           (attribute
             (identifier)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                (expression
+                  (reference_expression
+                    (identifier)))
+                (expression
+                  (reference_expression
+                    (identifier))))))
           (attribute
             (identifier)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                (expression
+                  (reference_expression
+                    (identifier)))
+                (expression
+                  (reference_expression
+                    (identifier))))))
           (attribute
             (identifier)
             (block
@@ -434,9 +476,10 @@ op STR(r: card(4), addr: AddressMode)
                   (assignment_statement
                     (location
                       (identifier)
-                      (expression
-                        (reference_expression
-                          (identifier))))
+                      (index_part
+                        (expression
+                          (reference_expression
+                            (identifier)))))
                     (expression
                       (reference_expression
                         (identifier))))))))))))
@@ -444,41 +487,43 @@ op STR(r: card(4), addr: AddressMode)
     (operation_specification
       (and_operation_specification
         (identifier)
-        (parameter
-          (identifier)
-          (type_expression
-            (card_type
-              (integer))))
-        (parameter
-          (identifier)
-          (type_expression
-            (named_type
-              (identifier))))
+        (parameters
+          (parameter
+            (identifier)
+            (type_expression
+              (card_type
+                (expression
+                  (constant_expression
+                    (litteral
+                      (integer)))))))
+          (parameter
+            (identifier)
+            (type_expression
+              (named_type
+                (identifier)))))
         (attributes
           (attribute
             (identifier)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                (expression
+                  (reference_expression
+                    (identifier)))
+                (expression
+                  (reference_expression
+                    (identifier))))))
           (attribute
             (identifier)
             (expression
               (format_expression
                 (string)
-                (arguments
-                  (expression
-                    (reference_expression
-                      (identifier)))
-                  (expression
-                    (reference_expression
-                      (identifier)))))))
+                (expression
+                  (reference_expression
+                    (identifier)))
+                (expression
+                  (reference_expression
+                    (identifier))))))
           (attribute
             (identifier)
             (block
@@ -490,7 +535,7 @@ op STR(r: card(4), addr: AddressMode)
                     (expression
                       (reference_expression
                         (identifier)
-                        (expression
-                          (reference_expression
-                            (identifier)))))))))))))))
-
+                        (index_part
+                          (expression
+                            (reference_expression
+                              (identifier))))))))))))))))

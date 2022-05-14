@@ -20,7 +20,10 @@ type some = int(32)
       (identifier)
       (type_expression
         (int_type
-          (integer))))))
+          (expression
+            (constant_expression
+              (litteral
+                (integer)))))))))
 ===
 card_type
 ===
@@ -32,7 +35,10 @@ type some = card(64)
       (identifier)
       (type_expression
         (card_type
-          (integer))))))
+          (expression
+            (constant_expression
+              (litteral
+                (integer)))))))))
 ===
 fix_type
 ===
@@ -44,8 +50,14 @@ type some = fix(16, 16)
       (identifier)
       (type_expression
         (fix_type
-          (integer)
-          (integer))))))
+          (expression
+            (constant_expression
+              (litteral
+                (integer))))
+          (expression
+            (constant_expression
+              (litteral
+                (integer)))))))))
 ===
 float_type
 ===
@@ -57,8 +69,14 @@ type some = float(23, 8)
       (identifier)
       (type_expression
         (float_type
-          (integer)
-          (integer))))))
+          (expression
+            (constant_expression
+              (litteral
+                (integer))))
+          (expression
+            (constant_expression
+              (litteral
+                (integer)))))))))
 ===
 range_type
 ===
@@ -70,8 +88,14 @@ type some = [0..10]
       (identifier)
       (type_expression
         (range_type
-          (integer)
-          (integer))))))
+          (expression
+            (constant_expression
+              (litteral
+                (integer))))
+          (expression
+            (constant_expression
+              (litteral
+                (integer)))))))))
 ===
 enum_type - empty
 ===
@@ -83,9 +107,10 @@ type some = enum()
       (identifier)
       (type_expression
         (enum_type
-          (value
-            (integer
-              (MISSING "integer_token1"))))))))
+          (enum_value
+            (expression
+              (reference_expression
+                (MISSING identifier)))))))))
 ===
 enum_type - num
 ===
@@ -97,8 +122,11 @@ type some = enum(1)
       (identifier)
       (type_expression
         (enum_type
-          (value
-            (integer)))))))
+          (enum_value
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))))))))
 ===
 enum_type - num, range, num
 ===
@@ -110,13 +138,25 @@ type some = enum(1, 2..3, 4)
       (identifier)
       (type_expression
         (enum_type
-          (value
-            (integer))
-          (value
-            (integer)
-            (integer))
-          (value
-            (integer)))))))
+          (enum_value
+            (expression
+              (constant_expression
+                (litteral
+                  (integer)))))
+          (enum_value
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))
+            (expression
+              (constant_expression
+                (litteral
+                  (integer)))))
+          (enum_value
+            (expression
+              (constant_expression
+                (litteral
+                  (integer))))))))))
 ===
 named_type
 ===

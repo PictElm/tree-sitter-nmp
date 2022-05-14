@@ -47,17 +47,17 @@ module.exports = grammar({
     ),
     register_specification: $ => seq(
       'reg', field('id', $.identifier),
-      '[', field('size', $.expression), ',', field('type', $.type_expression), ']',
+      $.reg_part,
       optional($.attributes),
     ),
     memory_specification: $ => seq(
       'mem', field('id', $.identifier),
-      '[', field('ns', $.expression), optional(seq(',', field('t', $.type_expression))), ']',
+      $.mem_part,
       optional($.attributes),
     ),
     variable_specification: $ => seq(
       'var', field('id', $.identifier),
-      '[', field('ns', $.expression), ',', field('t', $.type_expression), ']',
+      $.reg_part,
       optional($.attributes),
     ),
     operation_specification: $ => choice(
@@ -74,14 +74,14 @@ module.exports = grammar({
     ),
     canon_function_declaration: $ => seq(
       'canon', $.type_expression, $.string,
-      '(', repeatSep($.type_expression, ','), ')',
+      $.type_list,
     ),
     canon_procedure_declaration: $ => seq(
       'canon', $.string,
-      '(', repeatSep($.type_expression, ','), ')',
+      $.type_list,
     ),
     canon_variable_declaration: $ => seq(
-      'canon', $.type_specification, $.string,
+      'canon', $.type_expression, $.string,
     ),
     top_level_selection: $ => seq(
       'if', $.expression,
@@ -91,9 +91,14 @@ module.exports = grammar({
     ),
     other_directive: $ => seq('#', token.immediate(/[a-zA-Z_][a-zA-Z_0-9]*/), /.*/),
 
+    reg_part: $ => seq('[', optional(seq(field('size', $.expression), ',')), field('type', $.type_expression), ']'),
+    mem_part: $ => seq('[', field('size', $.expression), optional(seq(',', field('type', $.type_expression))), ']'),
+
+    type_list: $ => seq('(', repeatSep($.type_expression, ','), ')'),
+
     attributes: $ => repeat1($.attribute),
     attribute: $ => choice(
-      seq('__attr', '(', $.identifier, ')'),
+      seq('__attr', '(', $.identifier, ')'), // XXX: not a thing in gliss2 parser, but still appears in older examples as well as in the lexer
       seq($.identifier, '=', choice($.location, $.expression, $.block))
     ),
     block: $ => seq('{', optional($.sequence), '}'),
@@ -102,15 +107,19 @@ module.exports = grammar({
       seq(
         field('id', $.identifier),
         optional(choice(
-          seq('[', field('index', $.expression), ']'),
-          seq('<', field('up', $.expression), '..', field('low', $.expression), '>'),
+          $.index_part,
+          $.bit_field_part,
         )),
       ),
       prec.left(seq($.location, '::', $.location)),
     ),
 
+    index_part: $ => seq('[', field('index', $.expression), ']'),
+    bit_field_part: $ => seq('<', field('up', $.expression), '..', field('low', $.expression), '>'),
+
     parameter: $ => seq($.identifier, ':', $.type_expression),
-    arguments: $ => repeatSep1($.expression, ','),
+    parameters: $ => seq('(', repeatSep($.parameter, ','), ')'),
+    arguments: $ => seq('(', repeatSep($.expression, ','), ')'),
 
     or_operation_specification: $ => seq(
       'op', field('id', $.identifier),
@@ -118,7 +127,7 @@ module.exports = grammar({
     ),
     and_operation_specification: $ => seq(
       'op', field('id', $.identifier),
-      '(', repeatSep($.parameter, ','), ')',
+      $.parameters,
       optional($.attributes),
     ),
     or_mode_specification: $ => seq(
@@ -127,7 +136,7 @@ module.exports = grammar({
     ),
     and_mode_specification: $ => seq(
       'mode', field('id', $.identifier),
-      '(', repeatSep($.parameter, ','), ')',
+      $.parameters,
       '=', $.expression,
       optional($.attributes),
     ),
@@ -143,6 +152,7 @@ module.exports = grammar({
       $.conditional_statement,
       $.switch_statement,
       $.canon_statement,
+      $.error_statement,
       $.call_statement,
       $.let_statement,
       $.for_statement,
@@ -157,14 +167,12 @@ module.exports = grammar({
       'endif',
     ),
     switch_statement: $ => seq(
-      'switch', '(', field('c', $.expression), ')',
-      '{', repeat($.case), optional($.default), '}',
+      'switch', field('c', $.parenthesized_expression),
+      $.switch_body,
     ),
-    canon_statement: $ => choice(
-      seq($.string, '(', optional($.arguments), ')'), // YYY:?
-      seq('canon', '(', $.string, optional(seq(',', $.arguments)), ')'),
-    ),
-    call_statement: $ => seq($.identifier, '(', optional($.arguments), ')'),
+    canon_statement: $ => seq($.string, $.arguments),
+    error_statement: $ => seq('error', '(', $.string, ')'), // YYY: $.string -> $.expression
+    call_statement: $ => seq($.identifier, $.arguments),
     let_statement: $ => seq(
       'let', $.identifier,
       optional(seq(':', $.type_expression)),
@@ -177,13 +185,15 @@ module.exports = grammar({
       'enddo',
     ),
 
+    switch_body: $ => seq('{', repeat($.case), optional($.default), '}'),
     case: $ => seq('case', field('v', $.expression), ':', field('r', $.expression)),
     default: $ => seq('default', ':', field('r', $.expression)),
 
-    expression: $ => choice( // YYY: @"IDENT" syntax?
+    expression: $ => choice(
       $.constant_expression,
       $.reference_expression,
       $.canon_expression,
+      //seq('@', $.string), // YYY: @"IDENT" syntax?
       $.call_expression,
       $.dotted_expression,
       $.unary_expression,
@@ -193,12 +203,12 @@ module.exports = grammar({
       $.format_expression,
       $.if_expression,
       $.switch_expression,
-      seq('(', $.expression, ')'),
+      $.parenthesized_expression,
     ),
     constant_expression: $ => $.litteral,
-    reference_expression: $ => seq($.identifier, optional(seq('[', field('i', $.expression), ']'))),
-    canon_expression: $ => seq($.string, '(', optional($.arguments), ')'), // YYY:?
-    call_expression: $ => seq($.identifier, '(', optional($.arguments), ')'),
+    reference_expression: $ => seq($.identifier, optional($.index_part)),
+    canon_expression: $ => seq($.string, $.arguments),
+    call_expression: $ => seq($.identifier, $.arguments),
     dotted_expression: $ => seq(field('pid', $.identifier), '.', field('cid', $.identifier)),
     unary_expression: $ => choice(
       seq('+', $.expression),
@@ -214,9 +224,12 @@ module.exports = grammar({
       $.shift_operation,
       $.coerce_expression,
     ),
-    bit_field_expression: $ => prec(42, seq($.expression, '<', $.expression, '..', $.expression, '>')),
+    bit_field_expression: $ => prec(42, seq($.expression, $.bit_field_part)),
     concat_expression: $ => binOpsWithPrec($.expression, ['::'], $.expression)[0],
-    format_expression: $ => seq('format', '(', $.string, optional(seq(',', $.arguments)), ')'),
+    // YYY: $.string -> $.expression (eg. call_expression, ...)
+    //      (would allow using $.arguments, which is preferable)
+    // seems gliss2 parser /expects/ a string constant
+    format_expression: $ => seq('format', '(', $.string, repeat(seq(',', $.expression)), ')'),
     if_expression: $ => seq(
       'if', field('c', $.expression),
       'then', field('t', $.expression),
@@ -224,15 +237,17 @@ module.exports = grammar({
       'endif',
     ),
     switch_expression: $ => seq(
-      'switch', '(', field('c', $.expression), ')',
-      '{', repeat($.case), optional($.default), '}',
+      'switch', field('c', $.parenthesized_expression),
+      $.switch_body,
     ),
+    parenthesized_expression: $ => seq('(', $.expression, ')'),
     arithmetic_expression: $ => choice(...binOpsWithPrec($.expression, ['+', '-', '*', '/', '%', '**'], $.expression)),
     comparison_expression: $ => choice(...binOpsWithPrec($.expression, ['==', '!=', '<', '<=', '>', '>='], $.expression)),
     logical_expression: $ => choice(...binOpsWithPrec($.expression, ['&&', '||'], $.expression)),
     bit_operation: $ => choice(...binOpsWithPrec($.expression, ['&', '|', '^'], $.expression)),
     shift_operation: $ => choice(...binOpsWithPrec($.expression, ['<<', '>>', '<<<', '>>>'], $.expression)),
-    coerce_expression: $ => seq('coerce', '(', $.type_expression, ',', $.expression, ')'),
+    coerce_expression: $ => seq('coerce', $.type_coerce_part),
+    type_coerce_part: $ => seq('(', $.type_expression, ',', $.expression, ')'),
 
     type_expression: $ => choice(
       $.bool_type,
@@ -245,24 +260,25 @@ module.exports = grammar({
       $.named_type,
     ),
     bool_type: $ => 'bool',
-    int_type: $ => seq('int', '(', field('N', $.integer), ')'),
-    card_type: $ => seq('card', '(', field('N', $.integer), ')'),
-    fix_type: $ => seq('fix', '(', field('I', $.integer), ',', field('F', $.integer), ')'),
-    float_type: $ => seq('float', '(', field('M', $.integer), ',', field('E', $.integer), ')'),
-    range_type: $ => seq('[', field('L', $.integer), '..', field('U', $.integer), ']'),
-    enum_type: $ => seq('enum', '(', repeatSep1($.value, ','), ')'),
+    int_type: $ => seq('int', '(', field('N', $.expression), ')'),
+    card_type: $ => seq('card', '(', field('N', $.expression), ')'),
+    fix_type: $ => seq('fix', '(', field('I', $.expression), ',', field('F', $.expression), ')'),
+    float_type: $ => seq('float', '(', field('M', $.expression), ',', field('E', $.expression), ')'),
+    range_type: $ => seq('[', field('L', $.expression), '..', field('U', $.expression), ']'),
+    enum_type: $ => seq('enum', '(', repeatSep1($.enum_value, ','), ')'),
     named_type: $ => $.identifier,
 
-    value: $ => choice(
-      $.integer,
-      seq($.integer, '..', $.integer),
+    enum_value: $ => choice(
+      $.expression,
+      seq($.expression, '..', $.expression),
     ),
 
     macro_directive: $ => seq(
       'macro', $.identifier,
-      optional(seq('(', repeatSep($.identifier, ','), ')')),
+      optional($.macro_parameters),
       '=', optional(alias(/([^\n]|\\\r?\n)*/, $.body)), optional('\n'),
     ),
+    macro_parameters: $ => seq('(', repeatSep($.identifier, ','), ')'),
     include_directive: $ => seq('include', $.string),
     delayed_include_directive: $ => seq('include', optional(choice('-', '_')), 'op', $.string),
 

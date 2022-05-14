@@ -11,6 +11,7 @@ op some()
     (operation_specification
       (and_operation_specification
         (identifier)
+        (parameters)
         (attributes
           (attribute
             (identifier)

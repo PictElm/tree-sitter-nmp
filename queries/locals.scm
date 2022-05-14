@@ -22,5 +22,9 @@
   (identifier) @local.definition)
 (parameter
   (identifier) @local.definition)
+(let_statement
+  (identifier) @local.definition)
+(for_statement
+  (identifier) @local.definition)
 
 (identifier) @local.reference
