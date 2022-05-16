@@ -98,7 +98,7 @@ module.exports = grammar({
 
     attributes: $ => repeat1($.attribute),
     attribute: $ => choice(
-      seq('__attr', '(', $.identifier, ')'), // XXX: not a thing in gliss2 parser, but still appears in older examples as well as in the lexer
+      seq('__attr', '(', $.identifier, ')'), // XXX: no longer a real thing, but still appears in older examples as well as in the lexer
       seq($.identifier, '=', choice($.location, $.expression, $.block))
     ),
     block: $ => seq('{', optional($.sequence), '}'),
@@ -171,7 +171,7 @@ module.exports = grammar({
       $.switch_body,
     ),
     canon_statement: $ => seq($.string, $.arguments),
-    error_statement: $ => seq('error', '(', $.string, ')'), // YYY: $.string -> $.expression
+    error_statement: $ => seq('error', '(', choice($.string, $.identifier, $.call_expression), ')'),
     call_statement: $ => seq($.identifier, $.arguments),
     let_statement: $ => seq(
       'let', $.identifier,
@@ -193,7 +193,6 @@ module.exports = grammar({
       $.constant_expression,
       $.reference_expression,
       $.canon_expression,
-      //seq('@', $.string), // YYY: @"IDENT" syntax?
       $.call_expression,
       $.dotted_expression,
       $.unary_expression,
@@ -226,10 +225,10 @@ module.exports = grammar({
     ),
     bit_field_expression: $ => prec(42, seq($.expression, $.bit_field_part)),
     concat_expression: $ => binOpsWithPrec($.expression, ['::'], $.expression)[0],
-    // YYY: $.string -> $.expression (eg. call_expression, ...)
-    //      (would allow using $.arguments, which is preferable)
-    // seems gliss2 parser /expects/ a string constant
-    format_expression: $ => seq('format', '(', $.string, repeat(seq(',', $.expression)), ')'),
+    format_expression: $ => seq('format', $.format_expression_arguments),
+    format_expression_arguments: $ => seq(
+      '(', choice($.string, $.identifier, $.call_expression), repeat1(seq(',', $.expression)), ')',
+    ),
     if_expression: $ => seq(
       'if', field('c', $.expression),
       'then', field('t', $.expression),

@@ -1,10 +1,13 @@
 ((identifier) @constant
-  (#match? @constant "^[A-Z][A-Z_0-9]*$"))
+  (#match? @constant "^[A-Z_][A-Z_0-9]*$"))
 (canon_variable_declaration
   ((string) @constant
-    (#match? @constant "^\"[A-Z][A-Z_0-9]*\"$"))) ; that ever matches? (missing ""?)
+    (#match? @constant "^\"[A-Z_][A-Z_0-9]*\"$")))
 (canon_variable_declaration
   (string) @variable)
+; attempt at matching canonical const reference (indistinguishable from string literal..?)
+((string) @constant
+  (#match? @constant "^\"[A-Z_][A-Z_0-9]*\"$"))
 
 (type_specification
   (identifier) @type)
@@ -12,7 +15,7 @@
   (and_mode_specification
     (identifier) @type))
 (extend_specification
-  (identifier) @type) ; test with multiple
+  (identifier) @type)
 
 (operation_specification
   (and_operation_specification

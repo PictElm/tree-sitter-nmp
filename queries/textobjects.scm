@@ -9,8 +9,8 @@
 (extend_specification
   (attributes) @class.inside) @class.around
 
-(format_expression
-  (_) @parameter.inside) ; YYY: could get rid of this
+(format_expression_arguments
+  (_) @parameter.inside)
 (arguments
   (expression) @parameter.inside)
 (parameter) @parameter.inside

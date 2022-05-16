@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-nmp",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "nMP grammar with tree-sitter",
   "main": "bindings/node",
   "keywords": [
@@ -27,12 +27,10 @@
   },
   "tree-sitter": [
     {
+      "scope": "source.nmp",
       "file-types": [
         "nmp",
         "nml"
-      ],
-      "highlights": [
-        "queries/highlights.scm"
       ]
     }
   ]
