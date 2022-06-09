@@ -146,7 +146,7 @@ module.exports = grammar({
       $.statement,
       $.other_directive,
     )),
-    statement: $ => seq(choice(
+    statement: $ => seq(optional(choice(
       $.action_statement,
       $.assignment_statement,
       $.conditional_statement,
@@ -156,7 +156,7 @@ module.exports = grammar({
       $.call_statement,
       $.let_statement,
       $.for_statement,
-    ), ';'),
+    )), ';'),
 
     action_statement: $ => seq($.identifier, optional(seq('.', $.identifier))),
     assignment_statement: $ => seq($.location, '=', $.expression),

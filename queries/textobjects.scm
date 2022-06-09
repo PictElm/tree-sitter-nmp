@@ -1,5 +1,3 @@
-;; textobjects querries for Helix editor
-
 (operation_specification
   (and_operation_specification
     (attributes) @function.inside)) @function.around

@@ -1080,40 +1080,48 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "action_statement"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "action_statement"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "assignment_statement"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "conditional_statement"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "switch_statement"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "canon_statement"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "error_statement"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "call_statement"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "let_statement"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "for_statement"
+                }
+              ]
             },
             {
-              "type": "SYMBOL",
-              "name": "assignment_statement"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "conditional_statement"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "switch_statement"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "canon_statement"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "error_statement"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "call_statement"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "let_statement"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "for_statement"
+              "type": "BLANK"
             }
           ]
         },
